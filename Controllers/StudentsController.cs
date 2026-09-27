@@ -1,129 +1,164 @@
-using Microsoft.AspNetCore.Mvc;
+ using Microsoft.AspNetCore.Mvc;
+ using StudentManagement.Models;
+
+// namespace StudentManagement.Controllers;
+
+
+// [ApiController]
+// [Route("api/[controller]")]
+// public class StudentsController : ControllerBase
+// {
+//   [HttpGet("{id}")]//GET API Request
+//   public IActionResult GetStudents(int id)
+//   {
+//     var students = new List<Student>
+//     {
+//       new Student
+//       {
+//         Id =1,
+//         Name = "Bala",
+//         Email = "bala@gmail.com",
+//         Course = "CSE"
+
+//       },
+//       new Student 
+//       {
+//         Id =2,
+//         Name = "Asus",
+//         Email = "bala@gmail.com",
+//         Course = "Civil"
+
+//       }
+//     };
+
+//     var student =students.FirstOrDefault(s => s.Id == id);
+
+//     if (student == null)
+//     {
+//       return NotFound("Student not there");
+//     }
+//     return Ok(student); 
+//   }
+
+//   [HttpGet]//GET API Request
+//   public IActionResult GetStudents()
+//   {
+//     var students = new List<Student>
+//     {
+//       new Student
+//       {
+//         Id =1,
+//         Name = "Bala",
+//         Email = "bala@gmail.com",
+//         Course = "CSE"
+
+//       },
+//       new Student 
+//       {
+//         Id =2,
+//         Name = "Asus",
+//         Email = "bala@gmail.com",
+//         Course = "Civil"
+
+//       }
+      
+      
+//     };
+
+//     return Ok(students); 
+    
+//   }
+  
+// [HttpPost]//POST Request
+// public IActionResult AddStudent(Student student)
+//   {
+//    return Ok(student); 
+//   }
+// [HttpPut("{id}")]  //PUT Request 
+// public IActionResult UpdateStudent(int id ,Student student)
+//   {
+//     if(id!= student.Id)
+//     {
+//       return BadRequest("ID mismatch");
+//     }
+//     return Ok(new
+//     {
+//       message ="Student updated successfully",
+//       data = student 
+//     });
+
+//   }
+
+//   [HttpDelete("{id}")]//GET API Request
+//   public IActionResult DeleteStudents(int id)
+//   {
+//     var students = new List<Student>
+//     {
+//       new Student
+//       {
+//         Id =1,
+//         Name = "Bala",
+//         Email = "bala@gmail.com",
+//         Course = "CSE"
+
+//       },
+//       new Student 
+//       {
+//         Id =2,
+//         Name = "Asus",
+//         Email = "bala@gmail.com",
+//         Course = "Civil"
+
+//       }
+//     };
+
+//     var student =students.FirstOrDefault(s => s.Id == id);
+
+//     if (student == null)
+//     {
+//       return NotFound("Student not there");
+//     }
+//     students.Remove(student);
+//     return Ok(new
+//     {
+//       message = "Student delete successfully",
+//       data = student
+//     }); 
+//   }
+
+// }
+using Microsoft.EntityFrameworkCore;
 using StudentManagement.Models;
+using StudentManagement.Data;
 
 namespace StudentManagement.Controllers;
-
 
 [ApiController]
 [Route("api/[controller]")]
 public class StudentsController : ControllerBase
 {
-  [HttpGet("{id}")]//GET API Request
-  public IActionResult GetStudents(int id)
-  {
-    var students = new List<Student>
+    private readonly AppDbContext _context;
+
+    public StudentsController(AppDbContext context)
     {
-      new Student
-      {
-        Id =1,
-        Name = "Bala",
-        Email = "bala@gmail.com",
-        Course = "CSE"
-
-      },
-      new Student 
-      {
-        Id =2,
-        Name = "Asus",
-        Email = "bala@gmail.com",
-        Course = "Civil"
-
-      }
-    };
-
-    var student =students.FirstOrDefault(s => s.Id == id);
-
-    if (student == null)
-    {
-      return NotFound("Student not there");
+        _context = context;
     }
-    return Ok(student); 
-  }
 
-  [HttpGet]//GET API Request
-  public IActionResult GetStudents()
-  {
-    var students = new List<Student>
+    [HttpGet]
+    public async Task<IActionResult> GetStudents()
     {
-      new Student
-      {
-        Id =1,
-        Name = "Bala",
-        Email = "bala@gmail.com",
-        Course = "CSE"
+        var students = await _context.Students.ToListAsync();
 
-      },
-      new Student 
-      {
-        Id =2,
-        Name = "Asus",
-        Email = "bala@gmail.com",
-        Course = "Civil"
-
-      }
-      
-      
-    };
-
-    return Ok(students); 
-    
-  }
-  
-[HttpPost]//POST Request
-public IActionResult AddStudent(Student student)
-  {
-   return Ok(student); 
-  }
-[HttpPut("{id}")]  //PUT Request 
-public IActionResult UpdateStudent(int id ,Student student)
-  {
-    if(id!= student.Id)
-    {
-      return BadRequest("ID mismatch");
+        return Ok(students);
     }
-    return Ok(new
-    {
-      message ="Student updated successfully",
-      data = student 
-    });
 
-  }
+    [HttpPost]
+public async Task<IActionResult> AddStudent(Student student)
+{
+    _context.Students.Add(student);
 
-  [HttpDelete("{id}")]//GET API Request
-  public IActionResult DeleteStudents(int id)
-  {
-    var students = new List<Student>
-    {
-      new Student
-      {
-        Id =1,
-        Name = "Bala",
-        Email = "bala@gmail.com",
-        Course = "CSE"
+    await _context.SaveChangesAsync();
 
-      },
-      new Student 
-      {
-        Id =2,
-        Name = "Asus",
-        Email = "bala@gmail.com",
-        Course = "Civil"
-
-      }
-    };
-
-    var student =students.FirstOrDefault(s => s.Id == id);
-
-    if (student == null)
-    {
-      return NotFound("Student not there");
-    }
-    students.Remove(student);
-    return Ok(new
-    {
-      message = "Student delete successfully",
-      data = student
-    }); 
-  }
-
+    return Ok(student);
+}
 }
