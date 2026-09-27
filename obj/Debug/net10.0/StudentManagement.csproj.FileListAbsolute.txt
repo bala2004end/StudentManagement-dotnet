@@ -34,3 +34,4 @@ E:\dotnet\projects\StudentManagement\obj\Debug\net10.0\ref\StudentManagement.dll
 E:\dotnet\projects\StudentManagement\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
 E:\dotnet\projects\StudentManagement\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 E:\dotnet\projects\StudentManagement\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\dotnet\projects\StudentManagement\obj\Debug\net10.0\StudentManagement.sourcelink.json

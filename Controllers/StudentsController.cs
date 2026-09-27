@@ -8,8 +8,8 @@ namespace StudentManagement.Controllers;
 [Route("api/[controller]")]
 public class StudentsController : ControllerBase
 {
-  [HttpGet]//GET API Request
-  public IActionResult GetStudents()
+  [HttpGet("{id}")]//GET API Request
+  public IActionResult GetStudents(int id)
   {
     var students = new List<Student>
     {
@@ -30,7 +30,14 @@ public class StudentsController : ControllerBase
 
       }
     };
-    return Ok(students); 
+
+    var student =students.FirstOrDefault(s => s.Id == id);
+
+    if (student == null)
+    {
+      return NotFound("Student not there");
+    }
+    return Ok(student); 
   }
 [HttpPost]//POST Request
 public IActionResult AddStudent(Student student)
