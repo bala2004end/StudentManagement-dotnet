@@ -161,4 +161,49 @@ public async Task<IActionResult> AddStudent(Student student)
 
     return Ok(student);
 }
+[HttpPut("{id}")]
+public async Task<IActionResult> UpdateStudent(int id, Student student)
+{
+    if (id != student.Id)
+    {
+        return BadRequest("ID mismatch");
+    }
+
+    var existingStudent = await _context.Students.FindAsync(id);
+
+    if (existingStudent == null)
+    {
+        return NotFound("Student not found");
+    }
+
+    existingStudent.Name = student.Name;
+    existingStudent.Email = student.Email;
+    existingStudent.Course = student.Course;
+
+    await _context.SaveChangesAsync();
+
+    return Ok(existingStudent);
+}
+
+[HttpDelete("{id}")]
+public async Task<IActionResult> DeleteStudent(int id)
+{
+    var student = await _context.Students.FindAsync(id);
+
+    if (student == null)
+    {
+        return NotFound("Student not found");
+    }
+
+    _context.Students.Remove(student);
+
+    await _context.SaveChangesAsync();
+
+    return Ok(new
+    {
+        message = "Student deleted successfully",
+        data = student
+    });
+}
+
 }
